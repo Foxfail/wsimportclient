@@ -24,7 +24,9 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _PollForResults_QNAME = new QName("http://localhost:8888/", "pollForResults");
     private final static QName _AddDataRequest_QNAME = new QName("http://localhost:8888/", "addDataRequest");
+    private final static QName _PollForResultsResponse_QNAME = new QName("http://localhost:8888/", "pollForResultsResponse");
     private final static QName _AddDataRequestResponse_QNAME = new QName("http://localhost:8888/", "addDataRequestResponse");
     private final static QName _PollForResultResponse_QNAME = new QName("http://localhost:8888/", "pollForResultResponse");
     private final static QName _PollForResult_QNAME = new QName("http://localhost:8888/", "pollForResult");
@@ -61,11 +63,36 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PollForResults }
+     * 
+     */
+    public PollForResults createPollForResults() {
+        return new PollForResults();
+    }
+
+    /**
      * Create an instance of {@link AddDataRequest }
      * 
      */
     public AddDataRequest createAddDataRequest() {
         return new AddDataRequest();
+    }
+
+    /**
+     * Create an instance of {@link PollForResultsResponse }
+     * 
+     */
+    public PollForResultsResponse createPollForResultsResponse() {
+        return new PollForResultsResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PollForResults }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://localhost:8888/", name = "pollForResults")
+    public JAXBElement<PollForResults> createPollForResults(PollForResults value) {
+        return new JAXBElement<PollForResults>(_PollForResults_QNAME, PollForResults.class, null, value);
     }
 
     /**
@@ -75,6 +102,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://localhost:8888/", name = "addDataRequest")
     public JAXBElement<AddDataRequest> createAddDataRequest(AddDataRequest value) {
         return new JAXBElement<AddDataRequest>(_AddDataRequest_QNAME, AddDataRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link PollForResultsResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://localhost:8888/", name = "pollForResultsResponse")
+    public JAXBElement<PollForResultsResponse> createPollForResultsResponse(PollForResultsResponse value) {
+        return new JAXBElement<PollForResultsResponse>(_PollForResultsResponse_QNAME, PollForResultsResponse.class, null, value);
     }
 
     /**

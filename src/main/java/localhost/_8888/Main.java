@@ -1,5 +1,7 @@
 package localhost._8888;
 
+import com.google.gson.Gson;
+
 import java.util.*;
 
 public class Main {
@@ -8,6 +10,7 @@ public class Main {
     private static int number_of_requests = 100;
 
     public static void main(String[] args) throws InterruptedException {
+        //"C:\Program Files\Java\jdk1.8.0_201\bin\wsimport" -keep http://localhost:8888/?wsdl
         System.out.println("start");
         AsyncImplService asyncImplService = new AsyncImplService();
         System.out.println("connecting...");
@@ -54,39 +57,70 @@ public class Main {
         // ЗАПРАШИВАЕМ РЕЗУЛЬТАТЫ
         System.out.println();
         System.out.println("Получаем результаты");
+        //noinspection MismatchedQueryAndUpdateOfCollection
         TreeMap<Integer, String> resultsTreeMap = new TreeMap<>();
 
         int printedResults = 0; // для красивого вывода результатов
 
-        Iterator<Integer> iterator = ids.iterator();
-        while (iterator.hasNext()) {
-            // чтобы не заспамить сервис постоянными запросами ожидаем 1 сек
-            Thread.sleep(1000);
-            Integer id = iterator.next();
-            String response = asyncImpl.pollForResult(id);
+//        Iterator<Integer> iterator = ids.iterator();
+//        while (iterator.hasNext()) {
+//            // чтобы не заспамить сервис постоянными запросами ожидаем 1 сек
+//            Thread.sleep(1000);
+//            Integer id = iterator.next();
+//            String response = asyncImpl.pollForResult(id);
+//
+//            if (response != null) { //если в ответе пришел результат по запросу
+//                iterator.remove();
+//                resultsTreeMap.put(id, response);
+//
+//                // блок красивого вывода
+//                System.out.print(id + "=" + response + ",\t   ");
+//                printedResults++;
+//                if (printedResults % 10 == 0) {
+//                    System.out.println();
+//                }
+//
+//            }
+//
+//            if (!iterator.hasNext()) {
+//                // перезапускаем цикл если уже прошли весь массив, но не все результаты получены
+////                System.out.println("Проверяю не осталось ли результатов");
+//                iterator = ids.iterator();
+//            }
+//        }
 
-            if (response != null) { //если в ответе пришел результат по запросу
-                iterator.remove();
-                resultsTreeMap.put(id, response);
+
+        //новые результаты
+        while (ids.size() > 0) {
+            HashMap<String, String> readyHashMap = new HashMap<>();
+            String jsonHashMap = asyncImpl.pollForResults(ids);
+            Gson gson = new Gson();
+            readyHashMap = gson.fromJson(jsonHashMap, readyHashMap.getClass());
+
+            Iterator<String> iterator = readyHashMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                String id = iterator.next();
+                String data = readyHashMap.get(id);
+                ids.remove(id);
+                resultsTreeMap.put(Integer.valueOf(id), data);
 
                 // блок красивого вывода
-                System.out.print(id + "=" + response + ",\t   ");
+                System.out.print(id + "=" + data + ",\t   ");
                 printedResults++;
                 if (printedResults % 10 == 0) {
                     System.out.println();
                 }
-
             }
 
-            if (!iterator.hasNext()) {
-                // перезапускаем цикл если уже прошли весь массив, но не все результаты получены
-//                System.out.println("Проверяю не осталось ли результатов");
-                iterator = ids.iterator();
-            }
+
         }
 
+
+// некрасиво выводит
 //        System.out.println();
 //        System.out.println("РЕЗУЛЬТАТЫ:");
 //        System.out.println(resultsTreeMap.toString());
     }
+
+
 }

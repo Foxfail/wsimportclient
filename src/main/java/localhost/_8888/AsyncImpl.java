@@ -1,6 +1,7 @@
 
 package localhost._8888;
 
+import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -38,6 +39,21 @@ public interface AsyncImpl {
     public String pollForResult(
         @WebParam(name = "arg0", targetNamespace = "")
         Integer arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "pollForResults", targetNamespace = "http://localhost:8888/", className = "localhost._8888.PollForResults")
+    @ResponseWrapper(localName = "pollForResultsResponse", targetNamespace = "http://localhost:8888/", className = "localhost._8888.PollForResultsResponse")
+    @Action(input = "http://localhost:8888/AsyncImpl/pollForResultsRequest", output = "http://localhost:8888/AsyncImpl/pollForResultsResponse")
+    public String pollForResults(
+        @WebParam(name = "arg0", targetNamespace = "")
+        List<Integer> arg0);
 
     /**
      * 
