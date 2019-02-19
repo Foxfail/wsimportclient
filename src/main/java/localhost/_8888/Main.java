@@ -89,7 +89,6 @@ public class Main {
 //            }
 //        }
 
-
         //новые результаты
         while (ids.size() > 0) {
             HashMap<String, String> readyHashMap = new HashMap<>();
